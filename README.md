@@ -11,17 +11,17 @@ This application is a standalone microservice with options to:
 * You want to force all users to use the `www` carnical host name
 
 ## Why use this project
-* It's packaged as an extreamly small Docker image making it portable and easy to deply
+* It's packaged as an extreamly small Docker image making it portable and easy to deploy at only 1.8MB in size.
 
 ## Why did I build httpredirector
 
-I am using `Google Cloud` to deploy a HTTP service running in a managed group pacakged as a Docker image. 
+I am using `Google Cloud` to deploy a HTTP service running in a managed group packaged as a Docker image. 
 
 The service runs on port `8080` and I have a `Cloud Loadbalancer` sat in front of the service terminating `SSL`.
 
 I wanted a simple easy generic way to force SSL. As I am deploying using Docker I can run this microservice on a node and route all non `HTTPS` traffic at the load balancer to the redirection service.
 
-Existing Docker images supported HTTP -> HTTPS on with no support for forcing `www`. The Docker images where also extramly large. `httpredirector` is a 1.8MB Docker image.
+Existing Docker images supported HTTP -> HTTPS on with no support for forcing `www`. The Docker images where also extremely large. `httpredirector` is a 1.8MB Docker image.
 
 
 ## Building
@@ -67,7 +67,7 @@ docker build --tag httpredirector/httpredirector .
 * To force SSL you need to pass the `FORCE_SSL` environment variable to Docker
 * To force `WWW` redirect you need to pass the `FORCE_WWW` environment variable to Docker
 
-Example useage which exposes the redirection on port 80
+Example usage which exposes the redirection on port 80
 
 ```
 docker run --rm -ti -e FORCE_SSL=TRUE -e FORCE_WWW=TRUE -p 80:8080 httpredirector/httpredirector
