@@ -1,0 +1,33 @@
+name:                httpredirector
+version:             0.0.1
+synopsis:            HTTP redirection microservice
+description:         Please see README.md
+homepage:            https://github.com/forficate/httpredirector#readme
+license:             Apache-2.0
+license-file:        LICENSE
+author:              Adam Evans
+maintainer:          adam@agileand.me
+copyright:           2016 Adam Evans
+category:            Web
+build-type:          Simple
+extra-source-files:  README.md
+cabal-version:       >=1.10
+
+executable httpredirector-exe
+  hs-source-dirs:      app
+  main-is:             Main.hs
+  ghc-options:         -threaded -rtsopts -with-rtsopts=-N -Wall
+  build-depends:       base
+                     , classy-prelude
+                     , either
+                     , text
+                     , http-types
+                     , warp
+                     , wai
+  default-language:    Haskell2010
+  default-extensions:  OverloadedStrings, NoImplicitPrelude, ScopedTypeVariables
+
+
+source-repository head
+  type:     git
+  location: https://github.com/forficate/httpredirector
