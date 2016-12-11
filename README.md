@@ -42,7 +42,7 @@ docker run --rm -ti \
   -e FORCE_SSL=TRUE \
   -e FORCE_WWW=TRUE \
   -p 80:8080 \
-  httpredirector/httpredirector
+  q4uw/httpredirector:0.0.1
 ```
 
 Verify it is working
@@ -105,5 +105,5 @@ You can now exit the shell.
 ### Package the binary as a docker image
 
 ```
-docker build --tag httpredirector/httpredirector .
+docker build --tag q4uw/httpredirector .
 ```
