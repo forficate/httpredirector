@@ -4,7 +4,7 @@ This application is a standalone microservice with options to:
 
 * Force HTTP -> HTTPS redirection
 * Force `www` hostnames
-* Hostname whitelisting to prevent 3rd parties using you as a redirect service
+* Hostname whitelisting to prevent unathorized 3rd parties using you as a redirect service
 
 ## What problem does it solve?
 
@@ -25,20 +25,24 @@ I wanted a simple easy generic way to force SSL. As I am deploying using Docker 
 
 Existing HTTPS redirection images on Dockerhub did not also support forcing `www` and are also extremely large. `httpredirector` is a 1.8MB Docker image and supports both.
 
-*The existing redirection images on Dockerhub also allow anyone to use your server as a redirection service. This is true of [geldim/https-redirect](https://hub.docker.com/r/geldim/https-redirect/) which has 500K+ pulls and [camptocamp/https-redirect](https://hub.docker.com/r/camptocamp/https-redirect/) which has 10+k pulls.*
+**The existing redirection images on Dockerhub also allow anyone to use your server as a redirection service. This is true of [geldim/https-redirect](https://hub.docker.com/r/geldim/https-redirect/) which has 500K+ pulls and [camptocamp/https-redirect](https://hub.docker.com/r/camptocamp/https-redirect/) which has 10k+ pulls.**
 
-httpredirector supports hostname white listing to prevent unathorised used.
+httpredirector supports hostname white listing to prevent unathorised useage.
 
 ## Running the image
 
 * To force SSL you need to pass the `FORCE_SSL` environment variable to Docker
 * To force `WWW` redirect you need to pass the `FORCE_WWW` environment variable to Docker
-* To restrict host set the `VALID_HOSTS` environment variable with a comma serperated list of host address. Example: `VALID_HOSTS="www.example.com,example.com"`
+* To restrict hosts set the `VALID_HOSTS` environment variable with a comma serperated list of host names. Example: `VALID_HOSTS="www.example.com,example.com"`
 
 Example usage which exposes the redirection on port 80
 
 ```
-docker run --rm -ti -e FORCE_SSL=TRUE -e FORCE_WWW=TRUE -p 80:8080 httpredirector/httpredirector
+docker run --rm -ti
+  -e FORCE_SSL=TRUE 
+  -e FORCE_WWW=TRUE 
+  -p 80:8080 
+  httpredirector/httpredirector
 ```
 
 Verify it is working
