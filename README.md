@@ -23,7 +23,7 @@ The service runs on port `8080` and I have a `Cloud Loadbalancer` in front of th
 
 I wanted a simple easy generic way to force SSL. As I am deploying using Docker I can run this microservice on a node and route all non `HTTPS` traffic at the load balancer to the redirection service.
 
-Existing HTTPS redirection images on Dockerhub did not also support forcing `www` and are also extremely large. `httpredirector` is a 1.8MB Docker image and supports both.
+Existing HTTPS redirection images on Dockerhub did not support forcing `www` and are also extremely large. `httpredirector` is a 1.8MB Docker image and supports both.
 
 **The existing redirection images on Dockerhub also allow anyone to use your server as a redirection service. This is true of [geldim/https-redirect](https://hub.docker.com/r/geldim/https-redirect/) which has 500K+ pulls and [camptocamp/https-redirect](https://hub.docker.com/r/camptocamp/https-redirect/) which has 10k+ pulls.**
 
