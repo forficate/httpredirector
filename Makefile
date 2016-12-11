@@ -1,5 +1,3 @@
-.DEFAULT_GOAL := build
-
 CONTAINER=docker run --rm -v $(PWD):/usr/src/build -v ${HOME}/.stack:/root/.stack -w /usr/src/build -it q4uw/haskell_build_env:0.0.1
 
 clean:
