@@ -24,7 +24,6 @@ main = do
   forceSSL   <- (== "TRUE") . toUpper . fromMaybe "" <$> lookupEnv "FORCE_SSL"
   forceWWW   <- (== "TRUE") . toUpper . fromMaybe "" <$> lookupEnv "FORCE_WWW"
   validHosts <- filter (not . null) . fmap strip . split (== ',') . pack . fromMaybe "" <$> lookupEnv "VALID_HOSTS"
-  putStrLn (tshow validHosts)
   port       <- fromMaybe 8080 . (=<<) readMay <$> lookupEnv "PORT"
   if not forceSSL && not forceWWW then
     putStrLn "ERROR - No configuration options set. Neither FORCE_SSL or FORCE_WWW was set" >> exitFailure
