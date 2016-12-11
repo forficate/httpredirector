@@ -38,10 +38,10 @@ httpredirector supports hostname white listing to prevent unathorised useage.
 Example usage which exposes the redirection on port 80
 
 ```
-docker run --rm -ti
-  -e FORCE_SSL=TRUE 
-  -e FORCE_WWW=TRUE 
-  -p 80:8080 
+docker run --rm -ti \
+  -e FORCE_SSL=TRUE \
+  -e FORCE_WWW=TRUE \
+  -p 80:8080 \
   httpredirector/httpredirector
 ```
 
@@ -71,7 +71,13 @@ To create a staticaly compiled binary we use Docker.
 From the project directory run the below command.
 
 ```
-docker run --rm -v $(pwd):/usr/src/build -v ${HOME}/.stack:/root/.stack -w /usr/src/build -it q4uw/haskell_build_env:0.0.1
+docker run \
+  --rm \
+  -v $(pwd):/usr/src/build \
+  -v ${HOME}/.stack:/root/.stack \
+  -w /usr/src/build \
+  -it \
+  q4uw/haskell_build_env:0.0.1
 ```
 
 This will:
@@ -83,7 +89,9 @@ This will:
 To staticly compile the project run the below command which will place the binary in the `./dist` directory.
 
 ```
-stack install --local-bin-path /usr/src/build/dist --ghc-options '-optl-static -fPIC -optc-Os'
+stack install \
+  --local-bin-path /usr/src/build/dist \
+  --ghc-options '-optl-static -fPIC -optc-Os'
 ```
 
 Next compress the binary using `UPX`. This significantly reduces the size.
