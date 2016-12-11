@@ -4,11 +4,13 @@ This application is a standalone microservice with options to:
 
 * Force HTTP -> HTTPS redirection
 * Force `www` hostnames
+* Hostname whitelisting to prevent 3rd parties using you as a redirect service
 
 ## What problem does it solve?
 
 * You are running a HTTP service that is not reversed proxied by APACHE or NGINX and you want a generic way to force HTTPS redirection
 * You want to force all users to use the `www` carnical host name
+* You are already deploying Docker containers
 
 ## Why use this project
 * It's packaged as an extreamly small Docker image making it portable and easy to deploy at only 1.8MB in size.
@@ -17,23 +19,55 @@ This application is a standalone microservice with options to:
 
 I am using `Google Cloud` to deploy a HTTP service running in a managed group packaged as a Docker image. 
 
-The service runs on port `8080` and I have a `Cloud Loadbalancer` sat in front of the service terminating `SSL`.
+The service runs on port `8080` and I have a `Cloud Loadbalancer` in front of the service terminating `SSL`.
 
 I wanted a simple easy generic way to force SSL. As I am deploying using Docker I can run this microservice on a node and route all non `HTTPS` traffic at the load balancer to the redirection service.
 
-Existing Docker images supported HTTP -> HTTPS on with no support for forcing `www`. The Docker images where also extremely large. `httpredirector` is a 1.8MB Docker image.
+Existing HTTPS redirection images on Dockerhub did not also support forcing `www` and are also extremely large. `httpredirector` is a 1.8MB Docker image and supports both.
+
+*The existing redirection images on Dockerhub also allow anyone to use your server as a redirection service. This is true of [geldim/https-redirect](https://hub.docker.com/r/geldim/https-redirect/) which has 500K+ pulls and [camptocamp/https-redirect](https://hub.docker.com/r/camptocamp/https-redirect/) which has 10+k pulls.*
+
+httpredirector supports hostname white listing to prevent unathorised used.
+
+## Running the image
+
+* To force SSL you need to pass the `FORCE_SSL` environment variable to Docker
+* To force `WWW` redirect you need to pass the `FORCE_WWW` environment variable to Docker
+* To restrict host set the `VALID_HOSTS` environment variable with a comma serperated list of host address. Example: `VALID_HOSTS="www.example.com,example.com"`
+
+Example usage which exposes the redirection on port 80
+
+```
+docker run --rm -ti -e FORCE_SSL=TRUE -e FORCE_WWW=TRUE -p 80:8080 httpredirector/httpredirector
+```
+
+Verify it is working
+
+```
+$ curl -I localhost
+
+HTTP/1.1 307 Temporary Redirect
+Date: Sat, 10 Dec 2016 07:19:01 GMT
+Server: Warp/3.2.9
+Location: https://www.localhost/
+```
 
 
-## Building
+## Building from source
+Check out the project
+
+```
+git clone git@github.com:ajevans85/httpredirector.git
+```
 
 ### Create a static compiled binary
 
 To create a staticaly compiled binary we use Docker.
 
-From the project directory run the below command which should give you a bash prompt.
+From the project directory run the below command.
 
 ```
-docker run -v $(pwd):/usr/src/build -v ${HOME}/.stack:/root/.stack -w /usr/src/build -it q4uw/haskell_build_env bash
+docker run --rm -v $(pwd):/usr/src/build -v ${HOME}/.stack:/root/.stack -w /usr/src/build -it q4uw/haskell_build_env:0.0.1
 ```
 
 This will:
@@ -61,26 +95,3 @@ You can now exit the shell.
 ```
 docker build --tag httpredirector/httpredirector .
 ```
-
-## Running the image
-
-* To force SSL you need to pass the `FORCE_SSL` environment variable to Docker
-* To force `WWW` redirect you need to pass the `FORCE_WWW` environment variable to Docker
-
-Example usage which exposes the redirection on port 80
-
-```
-docker run --rm -ti -e FORCE_SSL=TRUE -e FORCE_WWW=TRUE -p 80:8080 httpredirector/httpredirector
-```
-
-Verify it is working
-
-```
-$ curl -I localhost:8081
-
-HTTP/1.1 307 Temporary Redirect
-Date: Sat, 10 Dec 2016 07:19:01 GMT
-Server: Warp/3.2.9
-Location: https://www.localhost:8081/
-```
-
