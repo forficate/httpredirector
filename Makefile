@@ -5,7 +5,7 @@ clean:
 	rm -rf $(PWD)/dist
 
 dist:
-	$(CONTAINER) stack install --local-bin-path /usr/src/build/dist --ghc-options '-optl-static -fPIC -optc-Os'
+	$(CONTAINER) stack install --local-bin-path /usr/src/build/dist --ghc-options '-optl-static -split-objs -fPIC -optc-Os'
 	$(CONTAINER) upx --best --ultra-brute dist/httpredirector-exe
 
 docker-image:

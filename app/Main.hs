@@ -37,7 +37,10 @@ app protocol forceWWW validHost req =
     path <- maybe (Left badRequest) Right (safeGetRequestPathInfo req)
     queryString <- maybe (Left badRequest) Right (safeGetQueryString req)
     let newHost = if forceWWW  && not ("www." `isPrefixOf` host) then "www." <> host else host
-    Right (redirect $ tshow protocol <> "://" <> newHost <> path <> queryString)
+    if (path == "/healthcheck") then
+      Right(\respond -> respond $ responseLBS ok200 [(hContentType, "text/plain")] "ok")
+    else
+      Right (redirect $ tshow protocol <> "://" <> newHost <> path <> queryString)
 
 
 hostnameValidator :: [Text] -> Text -> Bool
