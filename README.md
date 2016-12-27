@@ -1,3 +1,6 @@
+[![Docker Pulls](https://img.shields.io/docker/pulls/q4uw/httpredirector.svg)](https://hub.docker.com/r/q4uw/httpredirector/)
+[![](https://badge.imagelayers.io/q4uw/httpredirector:latest.svg)](https://imagelayers.io/?images=q4uw/httpredirector:latest)
+
 # HTTP/HTTPS redirection microservice
 
 This application is a standalone microservice with options to:
@@ -5,6 +8,7 @@ This application is a standalone microservice with options to:
 * Force HTTP -> HTTPS redirection
 * Force `www` hostnames
 * Hostname whitelisting to prevent unathorized 3rd parties using you as a redirect service
+* /healthcheck endpoint returning text/plain HTTP 200
 
 ## What problem does it solve?
 
